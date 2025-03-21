@@ -12,7 +12,7 @@ namespace FPStore.Core.Abstracts
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? UpdatedDate { get; set; }
-        public DateTime? DeleteDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public Status IsActive { get; set; } = Status.Active;
     }
 }
