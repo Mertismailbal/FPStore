@@ -1,4 +1,6 @@
 ﻿using FPStore.Core.Abstracts;
+using FPStore.Core.Enums;
+using FPStore.Core.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,8 @@ namespace FPStore.Core.Models
         public string City { get; set; }
         public string District { get; set; }
         public string FullAddress { get; set; }
-
+        public string ApplicationUserID { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public Status Status => Status.Active;
     }
 }

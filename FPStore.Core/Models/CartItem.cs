@@ -22,7 +22,7 @@ namespace FPStore.Core.Models
         public int Quantity { get; set; }
 
         [NotMapped]
-        public decimal SubTotal
+        public double SubTotal
         {
             get
             {

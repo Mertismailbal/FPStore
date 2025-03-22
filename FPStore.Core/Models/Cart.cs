@@ -17,7 +17,7 @@ namespace FPStore.Core.Models
         public ICollection<CartItem> CartItems { get; set; }
 
         [NotMapped] // Veritabanında saklanmayacak, hesaplanacak
-        public decimal TotalAmount
+        public double TotalAmount
         {
             get
             {
