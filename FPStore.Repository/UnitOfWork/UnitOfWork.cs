@@ -8,32 +8,49 @@ using System.Threading.Tasks;
 namespace FPStore.Repository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
-    {   
+    {
         private IDbContextTransaction _transaction;
-        private readonly DbContext _context;        
+        private readonly DbContext _context;
         private readonly IProductRepository _products;
         private readonly ICategoryRepository _categories;
         private readonly IOrderRepository _orders;
         private readonly IReviewRepository _reviews;
         private readonly IIdentityRepository _identities;
+        private readonly IInvoiceRepository _invoices;
+        private readonly IInvoiceItemRepository _invoiceItem;
+        private readonly IOrderItemRepository _orderitems;
+        private readonly IAddressRepository _addresses;
 
-        public UnitOfWork(IDbContextTransaction transaction, DbContext context, IProductRepository products, ICategoryRepository categories, IOrderRepository order, IReviewRepository reviews, IIdentityRepository identities)
+        public UnitOfWork(IDbContextTransaction transaction, DbContext context, IProductRepository products, ICategoryRepository categories, IOrderRepository orders, IReviewRepository reviews, IIdentityRepository identities, IInvoiceRepository invoices, IInvoiceItemRepository invoiceItem, IOrderItemRepository orderitems, IAddressRepository addresses)
         {
             _transaction = transaction;
             _context = context;
             _products = products;
             _categories = categories;
-            _orders = order;
+            _orders = orders;
             _reviews = reviews;
             _identities = identities;
+            _invoices = invoices;
+            _invoiceItem = invoiceItem;
+            _orderitems = orderitems;
+            _addresses = addresses;
         }
-        public IProductRepository Products => _products;
-        public ICategoryRepository Categories => _categories;
-        public IOrderRepository Orders => _orders;
-        public IReviewRepository Reviews => _reviews;
+
+        public IProductRepository Product => _products;
+        public ICategoryRepository Category => _categories;
+        public IOrderRepository Order => _orders;
+        public IReviewRepository Review => _reviews;
         public IIdentityRepository Identity => _identities;
 
-        public async Task<int> SaveChangesAsync()
+        public IAddressRepository Address => _addresses;
+
+        public IOrderItemRepository OrderItem => _orderitems;
+
+        public IInvoiceRepository Invoice => _invoices;
+
+        public IInvoiceItemRepository InvoiceItem => _invoiceItem;
+
+        public async Task<int> Save()
         {
             return await _context.SaveChangesAsync();
         }
@@ -67,4 +84,4 @@ namespace FPStore.Repository.UnitOfWork
             _context.Dispose();
         }
     }
-} 
+}
