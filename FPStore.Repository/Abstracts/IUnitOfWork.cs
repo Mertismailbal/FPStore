@@ -17,7 +17,7 @@ namespace FPStore.Repository.Abstracts
         IReviewRepository Review { get; }
         IIdentityRepository Identity { get; }//Bundan emin deðiliz düzeltilmeli;
 
-        Task<int> SaveChangesAsync();
+        Task<int> Save();
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();
