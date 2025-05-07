@@ -1,4 +1,5 @@
 ﻿using FPStore.Core.Abstracts;
+using FPStore.Core.Enums;
 using FPStore.Core.Models.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace FPStore.Core.Models
     public class Cart : BaseEntity
     {
         public string UserId { get; set; }
+        public Status Status => Status.Active;
         public ApplicationUser User { get; set; }
 
         public ICollection<CartItem> CartItems { get; set; }
