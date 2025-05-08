@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35818.85 d17.13
+VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPStore.Core", "FPStore.Core\FPStore.Core.csproj", "{ECDD5F5A-53ED-4CB7-81CE-18410A9C996C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPStore.WebApp", "FPStore.WebApp\FPStore.WebApp.csproj", "{D25B77E1-2A20-4696-A255-B59832B39238}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ECDD5F5A-53ED-4CB7-81CE-18410A9C996C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECDD5F5A-53ED-4CB7-81CE-18410A9C996C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECDD5F5A-53ED-4CB7-81CE-18410A9C996C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D25B77E1-2A20-4696-A255-B59832B39238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D25B77E1-2A20-4696-A255-B59832B39238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D25B77E1-2A20-4696-A255-B59832B39238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D25B77E1-2A20-4696-A255-B59832B39238}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

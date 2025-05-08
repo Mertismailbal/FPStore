@@ -1,0 +1,42 @@
+<div class="row mt-5 mb-2">
+  <div class="col-2">
+    <partial name="_SideBar.cshtml" />
+  </div>
+  <div class="col-10">
+    <div class="row">
+      @for (int i = 1; i <= 6; i++)
+      {
+        <div class="col-md-4 mb-5">
+          <div class="card border-0 " style="width: 18rem;">
+            <img src="https://picsum.photos/id/@(i * 5)/500/500" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Product Brand, Product Name</h5>
+              <p class="card-text">Product Seller </p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="fa-regular fa-star"></i> Rating</li>
+              <li class="list-group-item">20 Letters Of Review</li>
+            </ul>
+            <div class="card-body">
+              <a class="card-link btn btn-outline-success"><i class="fa-solid fa-cart-plus"></i> Sepete Ekle</a>
+              <a class="card-link btn btn-outline-danger"><i class="fa-solid fa-magnifying-glass"></i> İncele</a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+@section Styles {
+  <link rel="stylesheet" href="~/lib/bootstrap-slider/css/bootstrap-slider.css">
+}
+@section Scripts {
+  <script src="~/lib/bootstrap-slider/bootstrap-slider.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Slider'ı başlatıyoruz
+      $('.slider').bootstrapSlider();
+    });
+  </script>
+}
