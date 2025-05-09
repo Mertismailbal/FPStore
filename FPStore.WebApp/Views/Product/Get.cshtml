@@ -1,0 +1,157 @@
+<div class="container my-5">
+  <div class="row">
+    <!-- Left Side: Product Image & Thumbnails -->
+    <div class="col-md-6">
+      <img id="mainImage" src="https://picsum.photos/id/122/500/400" class="img-fluid mb-3" alt="Main Boot">
+      <div class="d-flex gap-2">
+        <img src="https://picsum.photos/id/124/100/100" data-full="https://picsum.photos/id/124/500/400"
+          class="img-thumbnail thumb" alt="Thumb 1">
+        <img src="https://picsum.photos/id/126/100/100" data-full="https://picsum.photos/id/126/500/400"
+          class="img-thumbnail thumb" alt="Thumb 2">
+        <img src="https://picsum.photos/id/128/100/100" data-full="https://picsum.photos/id/128/500/400"
+          class="img-thumbnail thumb" alt="Thumb 3">
+        <img src="https://picsum.photos/id/130/100/100" data-full="https://picsum.photos/id/130/500/400"
+          class="img-thumbnail thumb" alt="Thumb 4">
+      </div>
+
+    </div>
+
+    <!-- Right Side: Product Details -->
+    <div class="col-md-6">
+      <h2>LOWA Men’s Renegade GTX Mid Hiking Boots Review</h2>
+      <p class="text-muted">
+        Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro
+        keffiyeh dreamcatcher synth.
+      </p>
+
+      <!-- Colors -->
+      <h6>Available Colors</h6>
+      <div class="d-flex gap-2 mb-3">
+        <button class="btn btn-success rounded-circle" style="width:30px; height:30px;"></button>
+        <button class="btn btn-primary rounded-circle" style="width:30px; height:30px;"></button>
+        <button class="btn btn-purple rounded-circle"
+          style="width:30px; height:30px; background-color: purple;"></button>
+        <button class="btn btn-danger rounded-circle" style="width:30px; height:30px;"></button>
+        <button class="btn btn-warning rounded-circle" style="width:30px; height:30px;"></button>
+      </div>
+
+      <!-- Sizes -->
+      <h6>Size</h6>
+      <div class="btn-group mb-3" role="group">
+        <button class="btn btn-outline-secondary">S</button>
+        <button class="btn btn-outline-secondary">M</button>
+        <button class="btn btn-outline-secondary">L</button>
+        <button class="btn btn-outline-secondary">XL</button>
+      </div>
+
+      <!-- Price -->
+      <div class="mb-3">
+        <h3>$80.00</h3>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex gap-2 mb-4">
+        <button class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i> Sepete Ekle</button>
+        <button class="btn btn-outline-secondary"></i>Geri Dön</button>
+      </div>
+
+      <!-- Social icons (just placeholders) -->
+      <div class="d-flex gap-2">
+        <i class="bi bi-facebook"></i>
+        <i class="bi bi-twitter"></i>
+        <i class="bi bi-rss"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Tabs Navigation -->
+<ul class="nav nav-tabs mt-5" id="productTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button"
+      role="tab">Ürün Açıklaması</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button"
+      role="tab">İncelemeler</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="rating-tab" data-bs-toggle="tab" data-bs-target="#rating" type="button"
+      role="tab">Puan</button>
+  </li>
+</ul>
+
+<!-- Tabs Content -->
+<div class="tab-content border p-3" id="productTabContent">
+  <div class="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="desc-tab">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae condimentum erat. Vestibulum ante ipsum
+      primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed posuere, purus at efficitur hendrerit...</p>
+  </div>
+  <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+    <p>Here you can add customer comments or feedback sections.</p>
+  </div>
+  <div class="tab-pane fade" id="rating" role="tabpanel" aria-labelledby="rating-tab">
+    <p>Here you can add rating stars or review summary.</p>
+  </div>
+</div>
+
+
+@section Scripts {
+<script>
+  const thumbnailsContainer = document.querySelector('.d-flex.gap-2');
+  const mainImage = document.getElementById('mainImage');
+
+  // Başlangıç ana resim ID'si
+  let currentMain = {
+    id: '122'
+  };
+
+  // Her thumbnail'a click olayı bağlayan fonksiyon
+  function setupThumbnailClick(thumb) {
+    thumb.addEventListener('click', () => {
+      const clickedThumb = thumb;
+      const fullSrc = clickedThumb.dataset.full;
+      const thumbSrc = clickedThumb.src;
+
+      // Ana resim ID'sini çıkar
+      const newIdMatch = fullSrc.match(/id\/(\d+)\//);
+      const newId = newIdMatch ? newIdMatch[1] : null;
+
+      if (!newId) return;
+
+      // 1. Ana resmi güncelle
+      mainImage.src = fullSrc;
+
+      // 2. Thumbnail sırasını kaydet
+      const index = Array.from(thumbnailsContainer.children).indexOf(clickedThumb);
+
+      // 3. Thumbnail'ı kaldır
+      thumbnailsContainer.removeChild(clickedThumb);
+
+      // 4. Önceki ana resmi thumbnail olarak oluştur
+      const oldThumb = document.createElement('img');
+      oldThumb.src = `https://picsum.photos/id/${currentMain.id}/100/100`;
+      oldThumb.className = 'img-thumbnail thumb';
+      oldThumb.setAttribute('data-full', `https://picsum.photos/id/${currentMain.id}/500/400`);
+      oldThumb.alt = 'Thumb ' + currentMain.id;
+
+      // Yeni oluşturulan thumbnail'a tıklama fonksiyonu bağla
+      setupThumbnailClick(oldThumb);
+
+      // Eski thumbnail pozisyonuna ekle
+      if (index >= thumbnailsContainer.children.length) {
+        thumbnailsContainer.appendChild(oldThumb);
+      } else {
+        thumbnailsContainer.insertBefore(oldThumb, thumbnailsContainer.children[index]);
+      }
+
+      // Ana resmi güncelle
+      currentMain.id = newId;
+    });
+  }
+
+  // İlk thumbnail'lara olayı bağla
+  const initialThumbnails = document.querySelectorAll('.thumb');
+  initialThumbnails.forEach(thumb => setupThumbnailClick(thumb));
+</script>
+
+}

@@ -8,5 +8,10 @@ namespace FPStore.WebApp.Controllers
     {
       return View();
     }
+
+    public IActionResult Get()
+    {
+      return View();
+    }
   }
 }
