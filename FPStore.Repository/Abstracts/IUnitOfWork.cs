@@ -21,5 +21,6 @@ namespace FPStore.Repository.Abstracts
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();
+        Task<int> SaveChangesAsync();
     }
 } 

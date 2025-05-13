@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Configs\" />
-    <Folder Include="Extentions\" />
+    <Compile Remove="Configs\**" />
+    <Compile Remove="Extentions\**" />
+    <EmbeddedResource Remove="Configs\**" />
+    <EmbeddedResource Remove="Extentions\**" />
+    <None Remove="Configs\**" />
+    <None Remove="Extentions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="UnitOfWork\" />
   </ItemGroup>
 

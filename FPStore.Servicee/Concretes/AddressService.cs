@@ -1,0 +1,33 @@
+﻿using FPStore.Core.Models;
+using FPStore.Repository.Abstracts;
+using FPStore.Repository.Concretes;
+using FPStore.Servicee.Abstracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FPStore.Servicee.Concretes
+{
+    public class AddressService : GenericService<Address>, IAddressService
+    {
+        private readonly IAddressRepository _addressRepository;
+
+        public AddressService(IAddressRepository addressRepository) : base(addressRepository)
+        {
+            _addressRepository = addressRepository;
+        }
+
+        public async Task<IEnumerable<Address>> GetAddressesByUserIdAsync(string userId)
+        {
+            return await _addressRepository.GetAddressesByUserIdAsync(userId);
+        }
+
+        public async Task<Address> SetDefaultAddressAsync(int addressId, string userId)
+        {
+            return await _addressRepository.SetDefaultAddressAsync(addressId, userId);
+        }
+    }
+}
