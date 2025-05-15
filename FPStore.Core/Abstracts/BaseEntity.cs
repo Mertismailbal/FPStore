@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FPStore.Core.Abstracts
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : IEntity
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;

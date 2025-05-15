@@ -35,5 +35,23 @@ namespace FPStore.Repository.Concretes
         //        .ToList();
         //    return filtered;
         //}
+
+        public async Task UpdateAsync(Product product)
+        {
+            _dbSet.Update(product);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Product> GetProductWithDetailsAsync(int productId)
+        {
+            // TODO: Implement
+            return await Task.FromResult<Product>(null);
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsWithReviewsAsync()
+        {
+            // TODO: Implement
+            return await Task.FromResult<IEnumerable<Product>>(null);
+        }
     }
 } 

@@ -1,6 +1,11 @@
-using FPStore.Core.Entities;
+using FPStore.Core.Models;
+using FPStore.Core.Models.Store;
+using FPStore.Core.Enums;
 using FPStore.Repository.Abstracts;
 using FPStore.Service.Abstracts;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FPStore.Service.Concretes
 {
@@ -8,18 +13,18 @@ namespace FPStore.Service.Concretes
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepository _cartRepository;
-        private readonly IProductRepository _productRepository;
+        private readonly IStoreProductRepository _storeProductRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public OrderService(
             IOrderRepository orderRepository,
             ICartRepository cartRepository,
-            IProductRepository productRepository,
+            IStoreProductRepository storeProductRepository,
             IUnitOfWork unitOfWork) : base(orderRepository)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
-            _productRepository = productRepository;
+            _storeProductRepository = storeProductRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -47,9 +52,9 @@ namespace FPStore.Service.Concretes
                 // Stok kontrolü
                 foreach (var item in cart.CartItems)
                 {
-                    var product = await _productRepository.GetByIdAsync(item.ProductId);
-                    if (product.Stock < item.Quantity)
-                        throw new Exception($"Ürün {product.Name} için yeterli stok yok. Mevcut stok: {product.Stock}");
+                    var storeProduct = item.StoreProduct;
+                    if (storeProduct.Stock < item.Quantity)
+                        throw new Exception($"Ürün {storeProduct.Product.Name} için yeterli stok yok. Mevcut stok: {storeProduct.Stock}");
                 }
 
                 // Sipariş oluştur
@@ -58,9 +63,9 @@ namespace FPStore.Service.Concretes
                 // Stokları güncelle
                 foreach (var item in cart.CartItems)
                 {
-                    var product = await _productRepository.GetByIdAsync(item.ProductId);
-                    product.Stock -= item.Quantity;
-                    await _productRepository.UpdateAsync(product);
+                    var storeProduct = item.StoreProduct;
+                    storeProduct.Stock -= item.Quantity;
+                    await _storeProductRepository.UpdateAsync(storeProduct);
                 }
 
                 // Sepeti temizle
@@ -78,35 +83,7 @@ namespace FPStore.Service.Concretes
 
         public async Task<Order> UpdateOrderStatusAsync(int orderId, OrderStatus status)
         {
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                var order = await _orderRepository.GetOrderWithItemsAsync(orderId);
-                if (order == null)
-                    throw new Exception("Sipariş bulunamadı");
-
-                // İptal durumunda stokları geri ekle
-                if (status == OrderStatus.Cancelled && order.Status != OrderStatus.Cancelled)
-                {
-                    foreach (var item in order.OrderItems)
-                    {
-                        var product = await _productRepository.GetByIdAsync(item.ProductId);
-                        product.Stock += item.Quantity;
-                        await _productRepository.UpdateAsync(product);
-                    }
-                }
-
-                order = await _orderRepository.UpdateOrderStatusAsync(orderId, status);
-
-                await _unitOfWork.CommitTransactionAsync();
-                return order;
-            }
-            catch
-            {
-                await _unitOfWork.RollbackTransactionAsync();
-                throw;
-            }
+            return await _orderRepository.UpdateOrderStatusAsync(orderId, status);
         }
     }
 } 

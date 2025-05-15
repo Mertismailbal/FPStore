@@ -1,22 +1,26 @@
-using FPStore.Core.Entities;
+using FPStore.Core.Models;
+using FPStore.Core.Models.Store;
 using FPStore.Repository.Abstracts;
 using FPStore.Service.Abstracts;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FPStore.Service.Concretes
 {
     public class CartService : GenericService<Cart>, ICartService
     {
         private readonly ICartRepository _cartRepository;
-        private readonly IProductRepository _productRepository;
+        private readonly IStoreProductRepository _storeProductRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public CartService(
             ICartRepository cartRepository,
-            IProductRepository productRepository,
+            IStoreProductRepository storeProductRepository,
             IUnitOfWork unitOfWork) : base(cartRepository)
         {
             _cartRepository = cartRepository;
-            _productRepository = productRepository;
+            _storeProductRepository = storeProductRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -30,26 +34,26 @@ namespace FPStore.Service.Concretes
             return await _cartRepository.GetCartByUserIdAsync(userId);
         }
 
-        public async Task<Cart> AddItemToCartAsync(int cartId, int productId, int quantity)
+        public async Task<Cart> AddItemToCartAsync(int cartId, int storeProductId, int quantity)
         {
             try
             {
                 await _unitOfWork.BeginTransactionAsync();
 
                 // Stok kontrolü
-                var product = await _productRepository.GetByIdAsync(productId);
-                if (product == null)
-                    throw new Exception("Ürün bulunamadı");
+                var storeProduct = await _storeProductRepository.GetByIdAsync(storeProductId);
+                if (storeProduct == null)
+                    throw new Exception("Ürün mağazada bulunamadı");
 
-                if (product.Stock < quantity)
-                    throw new Exception($"Yeterli stok yok. Mevcut stok: {product.Stock}");
+                if (storeProduct.Stock < quantity)
+                    throw new Exception($"Yeterli stok yok. Mevcut stok: {storeProduct.Stock}");
 
                 // Sepete ekle
-                var cart = await _cartRepository.AddItemToCartAsync(cartId, productId, quantity);
+                var cart = await _cartRepository.AddItemToCartAsync(cartId, storeProductId, quantity);
 
                 // Stok güncelle
-                product.Stock -= quantity;
-                await _productRepository.UpdateAsync(product);
+                storeProduct.Stock -= quantity;
+                await _storeProductRepository.UpdateAsync(storeProduct);
 
                 await _unitOfWork.CommitTransactionAsync();
                 return cart;
@@ -61,7 +65,7 @@ namespace FPStore.Service.Concretes
             }
         }
 
-        public async Task<Cart> RemoveItemFromCartAsync(int cartId, int productId)
+        public async Task<Cart> RemoveItemFromCartAsync(int cartId, int storeProductId)
         {
             try
             {
@@ -69,18 +73,21 @@ namespace FPStore.Service.Concretes
 
                 // Sepetten ürünü al
                 var cart = await _cartRepository.GetCartWithItemsAsync(cartId);
-                var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+                var cartItem = cart.CartItems.FirstOrDefault(x => x.StoreProductId == storeProductId);
                 
                 if (cartItem != null)
                 {
                     // Stok geri ekle
-                    var product = await _productRepository.GetByIdAsync(productId);
-                    product.Stock += cartItem.Quantity;
-                    await _productRepository.UpdateAsync(product);
+                    var storeProduct = await _storeProductRepository.GetByIdAsync(storeProductId);
+                    if (storeProduct != null)
+                    {
+                        storeProduct.Stock += cartItem.Quantity;
+                        await _storeProductRepository.UpdateAsync(storeProduct);
+                    }
                 }
 
                 // Sepetten kaldır
-                cart = await _cartRepository.RemoveItemFromCartAsync(cartId, productId);
+                cart = await _cartRepository.RemoveItemFromCartAsync(cartId, storeProductId);
 
                 await _unitOfWork.CommitTransactionAsync();
                 return cart;
@@ -92,7 +99,7 @@ namespace FPStore.Service.Concretes
             }
         }
 
-        public async Task<Cart> UpdateCartItemQuantityAsync(int cartId, int productId, int quantity)
+        public async Task<Cart> UpdateCartItemQuantityAsync(int cartId, int storeProductId, int quantity)
         {
             try
             {
@@ -100,26 +107,28 @@ namespace FPStore.Service.Concretes
 
                 // Mevcut sepet ürününü al
                 var cart = await _cartRepository.GetCartWithItemsAsync(cartId);
-                var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+                var cartItem = cart.CartItems.FirstOrDefault(x => x.StoreProductId == storeProductId);
                 
                 if (cartItem != null)
                 {
-                    var product = await _productRepository.GetByIdAsync(productId);
-                    
-                    // Stok kontrolü
-                    if (product.Stock < quantity)
-                        throw new Exception($"Yeterli stok yok. Mevcut stok: {product.Stock}");
+                    var storeProduct = await _storeProductRepository.GetByIdAsync(storeProductId);
+                    if (storeProduct != null)
+                    {
+                        // Stok kontrolü
+                        if (storeProduct.Stock < quantity)
+                            throw new Exception($"Yeterli stok yok. Mevcut stok: {storeProduct.Stock}");
 
-                    // Eski miktarı stoka geri ekle
-                    product.Stock += cartItem.Quantity;
-                    
-                    // Yeni miktarı stoktan düş
-                    product.Stock -= quantity;
-                    await _productRepository.UpdateAsync(product);
+                        // Eski miktarı stoka geri ekle
+                        storeProduct.Stock += cartItem.Quantity;
+                        
+                        // Yeni miktarı stoktan düş
+                        storeProduct.Stock -= quantity;
+                        await _storeProductRepository.UpdateAsync(storeProduct);
+                    }
                 }
 
                 // Sepeti güncelle
-                cart = await _cartRepository.UpdateCartItemQuantityAsync(cartId, productId, quantity);
+                cart = await _cartRepository.UpdateCartItemQuantityAsync(cartId, storeProductId, quantity);
 
                 await _unitOfWork.CommitTransactionAsync();
                 return cart;

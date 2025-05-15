@@ -5,9 +5,11 @@ namespace FPStore.Repository.Abstracts
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {
+        Task<Order> GetOrderWithItemsAsync(int orderId);
         Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId);
-        //Task<IEnumerable<OrderItem>> GetOrderWithItemsAsync(int orderId);Ersýn yuzunden oluyor bunlar
-        Task<IEnumerable<Order>> GetOrdersByStatusAsync(OrderStatus orderOtatus);
-        Task<IEnumerable<Order>> GetOrdersByDateRangAsync(DateTime startDate, DateTime endDate);
+        Task<Order> CreateOrderFromCartAsync(int cartId, string userId);
+        Task<Order> UpdateOrderStatusAsync(int orderId, OrderStatus status);
+        Task<IEnumerable<Order>> GetOrdersByStatusAsync(OrderStatus orderStatus);
+        Task<IEnumerable<Order>> GetOrdersByDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 } 

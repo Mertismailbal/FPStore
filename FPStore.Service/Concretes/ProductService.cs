@@ -1,4 +1,4 @@
-using FPStore.Core.Entities;
+using FPStore.Core.Models;
 using FPStore.Repository.Abstracts;
 using FPStore.Service.Abstracts;
 
@@ -26,6 +26,11 @@ namespace FPStore.Service.Concretes
         public async Task<Product> GetProductWithDetailsAsync(int productId)
         {
             return await _productRepository.GetProductWithDetailsAsync(productId);
+        }
+
+        public async Task UpdateAsync(Product product)
+        {
+            await _productRepository.UpdateAsync(product);
         }
     }
 } 

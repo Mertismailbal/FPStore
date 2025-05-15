@@ -1,6 +1,6 @@
-using FPStore.Core.Entities;
-using FPStore.Repository.Abstracts;
+using FPStore.Core.Models;
 using FPStore.Service.Abstracts;
+using FPStore.Repository.Abstracts;
 
 namespace FPStore.Service.Concretes
 {

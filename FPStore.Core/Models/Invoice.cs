@@ -1,4 +1,5 @@
 ﻿using FPStore.Core.Abstracts;
+using FPStore.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -73,6 +74,8 @@ namespace FPStore.Core.Models
 
         [NotMapped]
         public double TotalAmount => SubTotal + TaxAmount;
+
+        public InvoiceStatus Status { get; set; }
 
         public Invoice()
         {

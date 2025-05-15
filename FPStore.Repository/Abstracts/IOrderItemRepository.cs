@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace FPStore.Repository.Abstracts
 {
-    public interface IOrderItemRepository:IGenericRepository<OrderItem>
+    public interface IOrderItemRepository : IGenericRepository<OrderItem>
     {
+        Task<OrderItem> GetOrderItemWithProductAsync(int orderItemId);
+        Task<IEnumerable<OrderItem>> GetOrderItemsByOrderIdAsync(int orderId);
     }
 }

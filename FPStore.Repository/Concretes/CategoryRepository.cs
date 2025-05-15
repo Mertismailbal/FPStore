@@ -21,5 +21,11 @@ namespace FPStore.Repository.Concretes
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id == categoryId);
         }
+
+        public async Task<IEnumerable<Category>> GetCategoriesWithProductsAsync()
+        {
+            // TODO: Implement
+            return await Task.FromResult<IEnumerable<Category>>(null);
+        }
     }
 } 

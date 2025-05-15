@@ -6,6 +6,7 @@ namespace FPStore.Repository.Abstracts
     {
         // Category'e özel metodlar buraya eklenir
         Task<IEnumerable<Category>> GetActiveCategoriesAsync();
+        Task<IEnumerable<Category>> GetCategoriesWithProductsAsync();
         Task<Category> GetCategoryWithProductsAsync(int categoryId);
     }
 } 

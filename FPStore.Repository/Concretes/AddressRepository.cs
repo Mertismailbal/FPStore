@@ -14,5 +14,17 @@ namespace FPStore.Repository.Concretes
         public AddressRepository(DbContext context) : base(context)
         {
         }
+
+        public async Task<Address> SetDefaultAddressAsync(int addressId, string userId)
+        {
+            // TODO: Implement
+            return await Task.FromResult<Address>(null);
+        }
+
+        public async Task<IEnumerable<Address>> GetAddressesByUserIdAsync(string userId)
+        {
+            // TODO: Implement
+            return await Task.FromResult<IEnumerable<Address>>(null);
+        }
     }
 }

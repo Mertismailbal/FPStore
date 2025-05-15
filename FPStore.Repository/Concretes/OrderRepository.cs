@@ -41,5 +41,29 @@ namespace FPStore.Repository.Concretes
         //{
         //    return await _dbSet.FirstOrDefaultAsync(orderId).
         //}/*Bunu OrderItem da OrderId ye gore getırmeyı deneycegız eger calısmazsa bunun suıclusu ersın asılygasılçsa*/
+
+        public async Task<Order> UpdateOrderStatusAsync(int orderId, FPStore.Core.Enums.OrderStatus status)
+        {
+            // TODO: Implement
+            return await Task.FromResult<Order>(null);
+        }
+
+        public async Task<Order> GetOrderWithItemsAsync(int orderId)
+        {
+            // TODO: Implement
+            return await Task.FromResult<Order>(null);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrdersByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            // TODO: Implement
+            return await Task.FromResult<IEnumerable<Order>>(null);
+        }
+
+        public async Task<Order> CreateOrderFromCartAsync(int cartId, string userId)
+        {
+            // TODO: Implement
+            return await Task.FromResult<Order>(null);
+        }
     }
 }

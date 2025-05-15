@@ -3,6 +3,12 @@ using FPStore.Repository.Abstracts;
 using FPStore.Repository.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using FPStore.Core.Abstracts;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System;
+using System.Linq;
 
 namespace FPStore.Repository.Concretes
 {
@@ -17,7 +23,72 @@ namespace FPStore.Repository.Concretes
             _roleManager = roleManager;
         }
 
-        // Kullanıcı işlemleri
+        // IGenericRepository<ApplicationUser> metotları
+        public async Task<ApplicationUser> GetByIdAsync(int id)
+        {
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
+        {
+            return await _userManager.Users.ToListAsync();
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> FindAsync(Expression<Func<ApplicationUser, bool>> predicate)
+        {
+            return await _userManager.Users.Where(predicate).ToListAsync();
+        }
+
+        public async Task<ApplicationUser> AddAsync(ApplicationUser entity)
+        {
+            var result = await _userManager.CreateAsync(entity);
+            return result.Succeeded ? entity : null;
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> AddRangeAsync(IEnumerable<ApplicationUser> entities)
+        {
+            var results = new List<ApplicationUser>();
+            foreach (var entity in entities)
+            {
+                var result = await _userManager.CreateAsync(entity);
+                if (result.Succeeded)
+                {
+                    results.Add(entity);
+                }
+            }
+            return results;
+        }
+
+        public async Task<ApplicationUser> UpdateAsync(ApplicationUser entity)
+        {
+            var result = await _userManager.UpdateAsync(entity);
+            return result.Succeeded ? entity : null;
+        }
+
+        public async Task RemoveAsync(ApplicationUser entity)
+        {
+            await _userManager.DeleteAsync(entity);
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<ApplicationUser> entities)
+        {
+            foreach (var entity in entities)
+            {
+                await _userManager.DeleteAsync(entity);
+            }
+        }
+
+        public async Task DeleteAsync(ApplicationUser entity)
+        {
+            await _userManager.DeleteAsync(entity);
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<ApplicationUser, bool>> predicate)
+        {
+            return await _userManager.Users.AnyAsync(predicate);
+        }
+
+        // IIdentityRepository metotları (mevcut kod)
         public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, bool isStoreAdmin = false)
         {
             var result = await _userManager.CreateAsync(user, password);
@@ -54,7 +125,6 @@ namespace FPStore.Repository.Concretes
             return await _userManager.DeleteAsync(user);
         }
 
-        // Kullanıcı-Rol işlemleri
         public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role)
         {
             if (role == IdentitySeedData.Roles.SuperAdmin)
@@ -83,7 +153,6 @@ namespace FPStore.Repository.Concretes
             return await _userManager.IsInRoleAsync(user, role);
         }
 
-        // Seed işlemleri
         public async Task SeedRolesAsync()
         {
             // Rolleri oluştur
@@ -114,6 +183,30 @@ namespace FPStore.Repository.Concretes
                     await _userManager.AddToRoleAsync(superAdminUser, IdentitySeedData.Roles.SuperAdmin);
                 }
             }
+        }
+
+        public async Task<ApplicationUser> UpdateUserProfileAsync(string userId, string firstName, string lastName, string phoneNumber)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                user.PhoneNumber = phoneNumber;
+                await _userManager.UpdateAsync(user);
+            }
+            return user;
+        }
+
+        public async Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+                return result.Succeeded;
+            }
+            return false;
         }
     }
 } 

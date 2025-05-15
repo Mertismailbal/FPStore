@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FPStore.Repository.Concretes
 {
-    public class CartItemRepository : GenericRepository<CartItem>, ICartITemRepository//Birini önce yazmakla sonra yazmak rasında nasıl bır fark var kı
+    public class CartItemRepository : GenericRepository<CartItem>, ICartItemRepository
     {
         public CartItemRepository(DbContext context) : base(context)
         {

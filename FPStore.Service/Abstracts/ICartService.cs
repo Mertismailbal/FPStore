@@ -1,4 +1,4 @@
-using FPStore.Core.Entities;
+using FPStore.Core.Models;
 
 namespace FPStore.Service.Abstracts
 {
@@ -6,8 +6,8 @@ namespace FPStore.Service.Abstracts
     {
         Task<Cart> GetCartWithItemsAsync(int cartId);
         Task<Cart> GetCartByUserIdAsync(string userId);
-        Task<Cart> AddItemToCartAsync(int cartId, int productId, int quantity);
-        Task<Cart> RemoveItemFromCartAsync(int cartId, int productId);
-        Task<Cart> UpdateCartItemQuantityAsync(int cartId, int productId, int quantity);
+        Task<Cart> AddItemToCartAsync(int cartId, int storeProductId, int quantity);
+        Task<Cart> RemoveItemFromCartAsync(int cartId, int storeProductId);
+        Task<Cart> UpdateCartItemQuantityAsync(int cartId, int storeProductId, int quantity);
     }
 } 

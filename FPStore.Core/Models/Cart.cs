@@ -1,6 +1,7 @@
 ﻿using FPStore.Core.Abstracts;
 using FPStore.Core.Enums;
 using FPStore.Core.Models.Identity;
+using FPStore.Core.Models.Store;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,7 +20,7 @@ namespace FPStore.Core.Models
         public ICollection<CartItem> CartItems { get; set; }
 
         [NotMapped] // Veritabanında saklanmayacak, hesaplanacak
-        public double TotalAmount
+        public decimal TotalAmount
         {
             get
             {

@@ -15,9 +15,10 @@ namespace FPStore.Repository.Abstracts
         IInvoiceRepository Invoice { get; }
         IInvoiceItemRepository InvoiceItem { get; }
         IReviewRepository Review { get; }
-        IIdentityRepository Identity { get; }//Bundan emin deðiliz düzeltilmeli;
+        IIdentityRepository Identity { get; }//Bundan emin deÄŸiliz dÃ¼zeltilmeli;
 
         Task<int> Save();
+        Task<int> SaveChangesAsync();
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();

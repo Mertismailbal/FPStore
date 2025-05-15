@@ -1,4 +1,5 @@
-using FPStore.Core.Entities;
+using FPStore.Core.Models;
+using FPStore.Core.Enums;
 
 namespace FPStore.Service.Abstracts
 {

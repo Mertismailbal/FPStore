@@ -9,6 +9,7 @@ namespace FPStore.Repository.Abstracts
 {
     public interface IAddressRepository : IGenericRepository<Address>
     {
-
+        Task<IEnumerable<Address>> GetAddressesByUserIdAsync(string userId);
+        Task<Address> SetDefaultAddressAsync(int addressId, string userId);
     }
 }

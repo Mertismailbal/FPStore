@@ -1,9 +1,12 @@
 using FPStore.Core.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FPStore.Repository.Abstracts
 {
-    public interface IIdentityRepository
+    public interface IIdentityRepository : IGenericRepository<ApplicationUser>
     {
         // Kullanıcı işlemleri
         Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, bool isStoreAdmin = false);
@@ -21,5 +24,9 @@ namespace FPStore.Repository.Abstracts
 
         // Seed işlemleri
         Task SeedRolesAsync();
+
+        // Yeni eklenen metotlar
+        Task<ApplicationUser> UpdateUserProfileAsync(string userId, string firstName, string lastName, string phoneNumber);
+        Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
     }
 } 

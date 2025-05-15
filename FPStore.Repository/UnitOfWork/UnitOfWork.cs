@@ -55,6 +55,11 @@ namespace FPStore.Repository.UnitOfWork
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
         public async Task BeginTransactionAsync()
         {
             _transaction = await _context.Database.BeginTransactionAsync();
