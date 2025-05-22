@@ -1,9 +1,11 @@
 ﻿using FPStore.Core.Abstracts;
+using FPStore.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace FPStore.Core.Models.Store
 {
@@ -18,14 +20,18 @@ namespace FPStore.Core.Models.Store
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
+
+        [Required]
         public int Stock { get; set; }
-        public bool IsActive { get; set; }
+
+        public Status IsActive { get; set; } = Status.Active;
         public string ImageUrl { get; set; }
 
         public StoreProduct()
         {
-            IsActive = true;
+            IsActive = Status.Active;
         }
     }
 }

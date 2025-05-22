@@ -8,9 +8,10 @@ namespace FPStore.Core.Enums
 {
     public enum OrderStatus
     {
-        Pending = 1,
-        Accepted = 2,
-        Shipped = 3,
+        Pending = 0,
+        Processing = 1,
+        Shipped = 2,
+        Delivered = 3,
         Cancelled = 4
     }
 }
